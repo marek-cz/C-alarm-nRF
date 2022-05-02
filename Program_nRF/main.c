@@ -10,27 +10,30 @@
 
 typedef struct  
 {
-	uint8_t PORTx;
-	uint8_t DDRx;
-	uint8_t PINx;
+	volatile uint8_t * PORTx;
+	volatile uint8_t * DDRx;
+	volatile uint8_t * PINx;
 	uint8_t pinNumber;
 }gpioPin_t;
 
+void togglePin( gpioPin_t pin )
+{
+	//*(pin->PORTx) ^= ( 1 << pin->pinNumber );
+	*(pin.PORTx) ^= (1 << pin.pinNumber );
+}
+
 int main(void)
 {
-	/*
-	DDRD	|= (1<<7);
-	PORTD	|= (1<<7);
-	*/
-	gpioPin_t led2 = { PORTD, DDRD, PIND, 7 };
-	led2.DDRx |= (1 << led2.pinNumber);
-	led2.PORTx |= (1 << led2.pinNumber);
+	
+	gpioPin_t led2 = { .PORTx = &PORTD, .DDRx = &DDRD, .PINx = &PIND, .pinNumber = PD7 };
+	*(led2.DDRx)  |= (1 << led2.pinNumber);
+	*(led2.PORTx) |= (1 << led2.pinNumber);
 	
     /* Replace with your application code */
     while (1) 
     {
 		_delay_ms(500);
-		led2.PORTx ^= (1 << led2.pinNumber);
+		togglePin(led2);
     }
 }
 

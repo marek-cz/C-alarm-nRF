@@ -1,3 +1,2 @@
-
-**/Debug
-**/.vs
+.vs/
+./Program_nRF/Debug/*
