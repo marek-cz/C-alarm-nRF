@@ -22,12 +22,45 @@ void togglePin( gpioPin_t pin )
 	*(pin.PORTx) ^= (1 << pin.pinNumber );
 }
 
+void setPin( gpioPin_t pin )
+{
+	*(pin.PORTx) |= (1 << pin.pinNumber );
+}
+
+void clearPin(gpioPin_t pin)
+{
+	*(pin.PORTx) &= ~(1 << pin.pinNumber );
+}
+
+void setPinOutput( gpioPin_t pin )
+{
+	*(pin.DDRx) |= ( 1 << pin.pinNumber );
+}
+
 int main(void)
 {
 	
 	gpioPin_t led2 = { .PORTx = &PORTD, .DDRx = &DDRD, .PINx = &PIND, .pinNumber = PD7 };
-	*(led2.DDRx)  |= (1 << led2.pinNumber);
-	*(led2.PORTx) |= (1 << led2.pinNumber);
+	gpioPin_t buzzer = { .PORTx = &PORTD, .DDRx = &DDRD, .PINx = &PIND, .pinNumber = PD4 };
+	gpioPin_t alarmLed = { .PORTx = &PORTD, .DDRx = &DDRD, .PINx = &PIND, .pinNumber = PD5 };
+	
+	// Konfiguracja pinow jako wyjscia:
+	setPinOutput(led2);
+	setPinOutput(buzzer);
+	setPinOutput(alarmLed);
+	
+	// stan poczatkowy
+	setPin(led2);
+	
+	setPin(buzzer);
+	_delay_ms(1000);
+	clearPin(buzzer);
+	
+	for(uint8_t i = 0; i < 20; i++)
+	{
+		togglePin(alarmLed);
+		_delay_ms(300);
+	}
 	
     /* Replace with your application code */
     while (1) 
