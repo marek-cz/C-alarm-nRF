@@ -5,19 +5,20 @@
  *  Author: Marek
  */ 
 
-#include "SPI/SPI.h"
+#include <avr/io.h>
+#include "SPI.h"
 
 void spiInit(void)
 {
 	//TODO
 }
 
-void spiWrite( uint8_t data )
+void spiWrite( uint8_t data, gpioPin_t nSS )
 {
 	//TODO
 }
 
-uint8_t spiRead(void)
+uint8_t spiRead( gpioPin_t nSS )
 {
 	//TODO
 }

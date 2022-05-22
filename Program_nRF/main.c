@@ -8,34 +8,8 @@
 #include <avr/io.h>
 #include <avr/delay.h>
 
-typedef struct  
-{
-	volatile uint8_t * PORTx;
-	volatile uint8_t * DDRx;
-	volatile uint8_t * PINx;
-	uint8_t pinNumber;
-}gpioPin_t;
+#include "GPIO/GPIO.h"
 
-void togglePin( gpioPin_t pin )
-{
-	//*(pin->PORTx) ^= ( 1 << pin->pinNumber );
-	*(pin.PORTx) ^= (1 << pin.pinNumber );
-}
-
-void setPin( gpioPin_t pin )
-{
-	*(pin.PORTx) |= (1 << pin.pinNumber );
-}
-
-void clearPin(gpioPin_t pin)
-{
-	*(pin.PORTx) &= ~(1 << pin.pinNumber );
-}
-
-void setPinOutput( gpioPin_t pin )
-{
-	*(pin.DDRx) |= ( 1 << pin.pinNumber );
-}
 
 int main(void)
 {
