@@ -13,9 +13,22 @@ void spiInit(void)
 	//TODO
 }
 
+static void spiWriteByte( uint8_t data )
+{
+	//TODO
+}
+
+static uint8_t spiReadByte( void )
+{
+	//TODO
+}
+
 void spiWrite( uint8_t data, gpioPin_t nSS )
 {
 	//TODO
+	clearPin(nSS);
+	// write to reg
+	setPin(nSS);
 }
 
 uint8_t spiRead( gpioPin_t nSS )

@@ -20,16 +20,16 @@ Discarded input sections
  .bss           0x00000000        0x0 SPI/SPI.o
  .text.spiInit  0x00000000        0x2 SPI/SPI.o
  .text.spiWrite
-                0x00000000       0x2e SPI/SPI.o
+                0x00000000       0x66 SPI/SPI.o
  .text.spiRead  0x00000000       0x26 SPI/SPI.o
- .debug_info    0x00000000      0x139 SPI/SPI.o
- .debug_abbrev  0x00000000       0xcf SPI/SPI.o
- .debug_loc     0x00000000       0xa8 SPI/SPI.o
+ .debug_info    0x00000000      0x16b SPI/SPI.o
+ .debug_abbrev  0x00000000       0xee SPI/SPI.o
+ .debug_loc     0x00000000       0xc9 SPI/SPI.o
  .debug_aranges
                 0x00000000       0x30 SPI/SPI.o
  .debug_ranges  0x00000000       0x20 SPI/SPI.o
- .debug_line    0x00000000       0xe7 SPI/SPI.o
- .debug_str     0x00000000      0x1b3 SPI/SPI.o
+ .debug_line    0x00000000       0xf3 SPI/SPI.o
+ .debug_str     0x00000000      0x1c3 SPI/SPI.o
  .comment       0x00000000       0x31 SPI/SPI.o
  .debug_frame   0x00000000       0x70 SPI/SPI.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
