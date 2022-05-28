@@ -7,8 +7,30 @@
 
 #include <avr/io.h>
 #include <avr/delay.h>
+#include <avr/interrupt.h>
 
 #include "GPIO/GPIO.h"
+
+#define NRF_TX
+#ifndef NRF_TX
+	#define NRF_RX
+#endif
+
+volatile uint8_t alarmFlag = 0;
+volatile uint8_t nrfDataInt = 0;
+
+ISR(INT1_vect)
+{
+	// rising edge interrupt
+	alarmFlag = 1;
+}
+
+// Obs³uga przerwania PCINT - RX
+ISR(PCINT0_vect)
+{
+	// falling edge interrupt
+	nrfDataInt = 1;
+}
 
 
 int main(void)
@@ -35,7 +57,12 @@ int main(void)
 	setPinOutput(sclk);
 	setPinOutput(mosi);
 	setPinOutput(nSS);
+
+#ifdef NRF_TX
 	
+	// konfiguracja przerwan
+	
+	sei();   // odblokowujemy przyjmowanie przerwañ
 	
 	// stan poczatkowy
 	setPin(led2);
@@ -53,8 +80,44 @@ int main(void)
     /* Replace with your application code */
     while (1) 
     {
-		_delay_ms(500);
-		togglePin(led2);
+		if( 1 == alarmFlag )
+		{
+			// todo
+			alarmFlag = 0;	
+			togglePin(led2);
+		}
     }
+#endif
+
+#ifdef NRF_RX
+	// konfiguracja przerwan
+
+	sei();   // odblokowujemy przyjmowanie przerwañ
+
+	// stan poczatkowy
+	setPin(led2);
+
+	setPin(buzzer);
+	_delay_ms(1000);
+	clearPin(buzzer);
+
+	for(uint8_t i = 0; i < 20; i++)
+	{
+		togglePin(alarmLed);
+		_delay_ms(300);
+	}
+
+	/* Replace with your application code */
+	while (1)
+	{
+		if( 1 == nrfDataInt )
+		{
+			// todo
+			nrfDataInt = 0;
+			togglePin(led2);
+		}
+	}
+#endif
+
 }
 
