@@ -13,12 +13,8 @@ void spiInit(void) //SPI initialization
 	//TODO
 	SPI_DDR |= (1<<MOSI)|(1<<SCK)|(1<<SS);
 	SET_SS;//high state on SS line
-	//SPCR &= SPI_CLOCK_POLARITY; // clock polarity bit cleared
-	//SPCR &= SPI_CLOCK_PHASE;// clock phase bit cleared
-	SPCR |= SPI_DATA_ORDER; // the LSB of the data word is transmitted first.
-	SPCR &= SPI_CLOCK_POLARITY & SPI_CLOCK_PHASE;// clock polarity and clock phase bits cleared
-	SPCR |= SPI_DATA_ORDER | (1<<MSTR) | SPI_SPCR_SPE | (SPR0)| SPI_INTER_ENABLED;
-	//SPCR |= SPI_SPCR_SPE;// SPI enable
+	SPCR &= ~( SPI_CLOCK_POLARITY | SPI_CLOCK_PHASE | SPI_DATA_ORDER ) ;// data order, clock polarity and clock phase bits cleared
+	SPCR |= (1<<MSTR) | SPI_SPCR_SPE | (SPR0);
 }
 
 
@@ -32,7 +28,6 @@ uint8_t spiTransreceive(uint8_t data)
 }
 void spiWrite( uint8_t* data, gpioPin_t nSS,int N )// writing data to SPI
 {
-	//TODO
 	clearPin(nSS);
 	for (uint8_t it=0;it<N;++it)
 	{
@@ -41,12 +36,12 @@ void spiWrite( uint8_t* data, gpioPin_t nSS,int N )// writing data to SPI
 	setPin(nSS);
 }
 
-uint8_t spiRead( gpioPin_t nSS )// reading data from SPI
+void spiRead(  uint8_t* data, gpioPin_t nSS,int N )// reading data from SPI
 {
-	
 	clearPin(nSS);
-	uint8_t data = spiTransreceive(0x00);
+	for (uint8_t it=0;it<N;++it)
+	{
+		data[it] = spiTransreceive(0x00);
+	}
 	setPin(nSS);
-	return data;
-	
 }

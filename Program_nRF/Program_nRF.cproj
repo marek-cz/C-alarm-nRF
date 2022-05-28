@@ -142,6 +142,15 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="nRF\nRF.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="nRF\nRF.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="nRF\nRFDef.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="SPI\SPI.c">
       <SubType>compile</SubType>
     </Compile>
@@ -151,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GPIO" />
+    <Folder Include="nRF" />
     <Folder Include="SPI" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />

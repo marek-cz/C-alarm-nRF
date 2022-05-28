@@ -22,16 +22,16 @@
 #define CLR_SS SPI_PORT &=~(1<<SS)
 // SPI CONFIG BITS
 #define SPI_SPCR_SPE PB6
-#define SPI_CLOCK_POLARITY ~(1<<3)
-#define SPI_CLOCK_PHASE ~(1<<2)
-#define SPI_DATA_ORDER 1<<5
+#define SPI_CLOCK_POLARITY (1<<3)
+#define SPI_CLOCK_PHASE (1<<2)
+#define SPI_DATA_ORDER (1<<5)
 #define SPI_INTER_ENABLED 1<<7
 
 //######################################################################
 
 void spiInit(void);
 void spiWrite( uint8_t* data, gpioPin_t nSS, int N );
-uint8_t spiRead( gpioPin_t nSS);
+void spiRead(  uint8_t* data, gpioPin_t nSS,int N );
 uint8_t spiTransreceive( uint8_t data);
 
 #endif /* SPI_H_ */

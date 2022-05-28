@@ -28,3 +28,13 @@ void setPinOutput( gpioPin_t pin )
 {
 	*(pin.DDRx) |= ( 1 << pin.pinNumber );
 }
+
+void setPinInput(gpioPin_t pin)
+{
+	*(pin.DDRx) &= ~( 1 << pin.pinNumber );
+}
+
+uint8_t gpioRead( gpioPin_t pin )
+{
+	return *(pin.PORTx) & (pin.pinNumber);
+}

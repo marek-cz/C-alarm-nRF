@@ -6,10 +6,11 @@
  */ 
 
 #include <avr/io.h>
-#include <avr/delay.h>
+#include <util/delay.h>
 #include <avr/interrupt.h>
 
 #include "GPIO/GPIO.h"
+#include "nRF/nRF.h"
 
 #define NRF_TX
 #ifndef NRF_TX
@@ -57,25 +58,24 @@ int main(void)
 	setPinOutput(sclk);
 	setPinOutput(mosi);
 	setPinOutput(nSS);
+	setPinOutput(CE);
+	// Konfiguracja pinow jako wejscia
+	setPinInput(miso);
+	setPinInput(extInt0);
+	setPinInput(extInt1);
+	// stan poczatkowy
+	setPin(led1);
+	setPin(led2);
+	setPin(nSS);
 
 #ifdef NRF_TX
-	
 	// konfiguracja przerwan
 	
 	sei();   // odblokowujemy przyjmowanie przerwañ
 	
-	// stan poczatkowy
-	setPin(led2);
-	
 	setPin(buzzer);
 	_delay_ms(1000);
 	clearPin(buzzer);
-	
-	for(uint8_t i = 0; i < 20; i++)
-	{
-		togglePin(alarmLed);
-		_delay_ms(300);
-	}
 	
     /* Replace with your application code */
     while (1) 
@@ -94,18 +94,10 @@ int main(void)
 
 	sei();   // odblokowujemy przyjmowanie przerwañ
 
-	// stan poczatkowy
-	setPin(led2);
 
 	setPin(buzzer);
 	_delay_ms(1000);
 	clearPin(buzzer);
-
-	for(uint8_t i = 0; i < 20; i++)
-	{
-		togglePin(alarmLed);
-		_delay_ms(300);
-	}
 
 	/* Replace with your application code */
 	while (1)
