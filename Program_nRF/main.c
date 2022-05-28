@@ -12,7 +12,7 @@
 #include "GPIO/GPIO.h"
 #include "nRF/nRF.h"
 
-#define NRF_TX
+//#define NRF_TX
 #ifndef NRF_TX
 	#define NRF_RX
 #endif
@@ -30,7 +30,10 @@ ISR(INT1_vect)
 ISR(PCINT0_vect)
 {
 	// falling edge interrupt
-	nrfDataInt = 1;
+	if( 0 == (PORTB & PB0) )//falling edge
+	{
+		nrfDataInt = 1;
+	}
 }
 
 
@@ -70,8 +73,15 @@ int main(void)
 
 #ifdef NRF_TX
 	// konfiguracja przerwan
-	
+	EICRA |= (1<<ISC11)|(1<<ISC10); //rising edge
+	EIMSK|=(1<<INT1);
 	sei();   // odblokowujemy przyjmowanie przerwañ
+	
+	// konfiguracja nRF
+	nRF24_Init(CE, nSS);
+	nRF24_SetRXAddress(0, (uint8_t*) "Nad", nSS);
+	nRF24_SetTXAddress((uint8_t*)"Odb", nSS);
+	nRF24_TX_Mode(CE, nSS);
 	
 	setPin(buzzer);
 	_delay_ms(1000);
@@ -86,14 +96,33 @@ int main(void)
 			alarmFlag = 0;	
 			togglePin(led2);
 		}
+		
+		for( uint8_t i=0; i<10; i++)
+		{
+			nRF24_WriteTXPayload(&i, nSS);
+			_delay_ms(1);
+			nRF24_WaitTX(CE, nSS);
+			_delay_ms(1000);
+		}
+		
     }
 #endif
 
 #ifdef NRF_RX
+	
+	uint8_t readData;
+	
 	// konfiguracja przerwan
+	PCICR |= (1<<PCIE0);
+	PCMSK0 |= (1<<PCINT0);
 
 	sei();   // odblokowujemy przyjmowanie przerwañ
 
+	// konfiguracja nRF
+	nRF24_Init(CE, nSS);
+	nRF24_SetRXAddress(0, (uint8_t*) "Odb", nSS);
+	nRF24_SetTXAddress((uint8_t*)"Nad", nSS);
+	nRF24_RX_Mode(CE, nSS);
 
 	setPin(buzzer);
 	_delay_ms(1000);
@@ -106,6 +135,11 @@ int main(void)
 		{
 			// todo
 			nrfDataInt = 0;
+			togglePin(led1);
+		}
+		if ( nRF24_RXAvailible(nSS) )
+		{
+			nRF24_ReadRXPaylaod(&readData, nSS);
 			togglePin(led2);
 		}
 	}

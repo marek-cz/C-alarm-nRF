@@ -378,7 +378,7 @@ uint8_t nRF24_RXAvailible(gpioPin_t nSS)
 	// RX FIFO Interrupt
 	if ((status & (1 << 6)))
 	{
-		nrf24_rx_flag = 1;
+		//nrf24_rx_flag = 1;
 		status |= (1<<6); // Interrupt flag clear
 		nRF24_WriteStatus(status, nSS);
 		return 1;
