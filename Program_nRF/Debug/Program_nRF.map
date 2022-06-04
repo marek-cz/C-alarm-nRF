@@ -597,14 +597,14 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x2304
+.debug_info     0x00000000     0x2307
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega168a/avr5/crtatmega168a.o
  .debug_info    0x000005f4      0x1dc GPIO/GPIO.o
  .debug_info    0x000007d0      0x519 main.o
- .debug_info    0x00000ce9     0x1228 nRF/nRF.o
- .debug_info    0x00001f11      0x226 SPI/SPI.o
- .debug_info    0x00002137      0x1cd UART/uart.o
+ .debug_info    0x00000ce9     0x122b nRF/nRF.o
+ .debug_info    0x00001f14      0x226 SPI/SPI.o
+ .debug_info    0x0000213a      0x1cd UART/uart.o
 
 .debug_abbrev   0x00000000      0xd69
  *(.debug_abbrev)
@@ -615,14 +615,14 @@ END GROUP
  .debug_abbrev  0x00000b09      0x12e SPI/SPI.o
  .debug_abbrev  0x00000c37      0x132 UART/uart.o
 
-.debug_line     0x00000000     0x1077
+.debug_line     0x00000000     0x1078
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega168a/avr5/crtatmega168a.o
  .debug_line    0x00000133      0x140 GPIO/GPIO.o
  .debug_line    0x00000273      0x2d0 main.o
- .debug_line    0x00000543      0x852 nRF/nRF.o
- .debug_line    0x00000d95      0x171 SPI/SPI.o
- .debug_line    0x00000f06      0x171 UART/uart.o
+ .debug_line    0x00000543      0x853 nRF/nRF.o
+ .debug_line    0x00000d96      0x171 SPI/SPI.o
+ .debug_line    0x00000f07      0x171 UART/uart.o
 
 .debug_frame    0x00000000      0x664
  *(.debug_frame)

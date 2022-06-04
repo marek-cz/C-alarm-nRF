@@ -11,7 +11,10 @@
 
 #include "../GPIO/GPIO.h"
 #include "../SPI/SPI.h"
+#ifdef DEBUG
 #include "../UART/UART.h"
+#endif
+
 
 #include "nRFDef.h"
 #include "nRF.h"
@@ -378,11 +381,11 @@ void nRF24_WaitTX()
 	{
 		nRF24_Delay(100);
 		status = nRF24_ReadStatus();
-		
+		#ifdef DEBUG
 		uartSendString("nRF24_WaitTX status = ");
 		uartSendHex(status);
 		uartSendString("\n\r");
-		
+		#endif
 	}while(!((status & (1<<NRF24_MAX_RT)) || (status & (1<<NRF24_TX_DS))));
 
 }

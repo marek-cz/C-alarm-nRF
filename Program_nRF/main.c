@@ -11,7 +11,9 @@
 
 #include "GPIO/GPIO.h"
 #include "nRF/nRF.h"
+#ifdef DEBUG
 #include "UART/UART.h"
+#endif
 
 #define NRF_TX
 #ifndef NRF_TX
@@ -82,8 +84,11 @@ int main(void)
 	setPin(led2);
 	setPin(nSS);
 	
+#ifdef DEBUG
 	uartInit();
 	uartSendString("Hello world!\n\r");
+#endif	
+	
 
 #ifdef NRF_TX
 	// konfiguracja przerwan
