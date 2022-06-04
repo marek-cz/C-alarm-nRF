@@ -21,11 +21,14 @@
 #define SET_SS SPI_PORT |=(1<<SS)
 #define CLR_SS SPI_PORT &=~(1<<SS)
 // SPI CONFIG BITS
-#define SPI_SPCR_SPE PB6
-#define SPI_CLOCK_POLARITY (1<<3)
-#define SPI_CLOCK_PHASE (1<<2)
-#define SPI_DATA_ORDER (1<<5)
-#define SPI_INTER_ENABLED 1<<7
+#define SPI_SPCR_SPR0	(1<<0)
+#define SPI_SPCR_SPR1	(1<<1)
+#define SPI_SPCR_CPHA	(1<<2)
+#define SPI_SPCR_CPOL	(1<<3)
+#define SPI_SPCR_MSTR	(1<<4)
+#define SPI_SPCR_DORD	(1<<5)
+#define SPI_SPCR_SPE	(1<<6)
+#define SPI_SPCR_SPIE	(1<<7)
 
 //######################################################################
 

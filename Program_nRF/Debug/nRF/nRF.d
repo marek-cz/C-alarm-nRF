@@ -12,8 +12,8 @@ nRF/nRF.d nRF/nRF.o: ../nRF/nRF.c ../nRF/../GPIO/GPIO.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- ../nRF/../SPI/SPI.h ../nRF/../SPI/../GPIO/GPIO.h ../nRF/nRFDef.h \
- ../nRF/nRF.h \
+ ../nRF/../SPI/SPI.h ../nRF/../SPI/../GPIO/GPIO.h ../nRF/../UART/UART.h \
+ ../nRF/nRFDef.h ../nRF/nRF.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h
@@ -49,6 +49,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 ../nRF/../SPI/SPI.h:
 
 ../nRF/../SPI/../GPIO/GPIO.h:
+
+../nRF/../UART/UART.h:
 
 ../nRF/nRFDef.h:
 

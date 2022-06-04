@@ -13,8 +13,8 @@ void spiInit(void) //SPI initialization
 	//TODO
 	SPI_DDR |= (1<<MOSI)|(1<<SCK)|(1<<SS);
 	SET_SS;//high state on SS line
-	SPCR &= ~( SPI_CLOCK_POLARITY | SPI_CLOCK_PHASE | SPI_DATA_ORDER ) ;// data order, clock polarity and clock phase bits cleared
-	SPCR |= (1<<MSTR) | SPI_SPCR_SPE | (SPR0);
+	SPCR &= ~( SPI_SPCR_CPOL | SPI_SPCR_CPHA | SPI_SPCR_DORD ) ;// MSB first, CPOL=0, CPHA=0
+	SPCR |= SPI_SPCR_MSTR | SPI_SPCR_SPE;
 }
 
 
