@@ -2,7 +2,7 @@
  * Program_nRF.c
  *
  * Created: 2022-04-16 10:25:34
- * Author : Marek
+ * Author : Marek i Piotrek
  */ 
 
 #include <avr/io.h>
@@ -22,13 +22,25 @@
 
 volatile uint8_t alarmFlag = 0;
 volatile uint8_t nrfDataInt = 0;
-
+volatile gpioPin_t alarmLed = { .PORTx = &PORTD, .DDRx = &DDRD, .PINx = &PIND, .pinNumber = PD5 };
 volatile uint8_t nrf24_rx_flag, nrf24_tx_flag, nrf24_mr_flag; // zadeklarowane w pliku nRF.c
 
+#ifdef NRF_TX
 ISR(INT1_vect)
 {
 	// rising edge interrupt
 	alarmFlag = 1;
+}
+#endif
+
+#ifdef NRF_RX
+// Obs³uga przerwania TIMER0_COMPA_vect
+ISR(TIMER0_COMPA_vect)
+{
+	if( 1 == alarmFlag )
+	{
+		togglePin(alarmLed);
+	}
 }
 
 // Obs³uga przerwania PCINT - RX
@@ -40,6 +52,7 @@ ISR(PCINT0_vect)
 		nrfDataInt = 1;
 	}
 }
+#endif
 
 static inline void buzzerPeak(gpioPin_t buzzer_pin)
 {
@@ -55,7 +68,7 @@ int main(void)
 	gpioPin_t led1 = { .PORTx = &PORTD, .DDRx = &DDRD, .PINx = &PIND, .pinNumber = PD6 };
 	gpioPin_t led2 = { .PORTx = &PORTD, .DDRx = &DDRD, .PINx = &PIND, .pinNumber = PD7 };
 	gpioPin_t buzzer = { .PORTx = &PORTD, .DDRx = &DDRD, .PINx = &PIND, .pinNumber = PD4 };
-	gpioPin_t alarmLed = { .PORTx = &PORTD, .DDRx = &DDRD, .PINx = &PIND, .pinNumber = PD5 };
+	//gpioPin_t alarmLed = { .PORTx = &PORTD, .DDRx = &DDRD, .PINx = &PIND, .pinNumber = PD5 };
 	gpioPin_t extInt0 = { .PORTx = &PORTB, .DDRx = &DDRB, .PINx = &PINB, .pinNumber = PB0 };
 	gpioPin_t extInt1 = { .PORTx = &PORTD, .DDRx = &DDRD, .PINx = &PIND, .pinNumber = PD3 };
 	// linie SPI - nRF
@@ -91,6 +104,7 @@ int main(void)
 	
 
 #ifdef NRF_TX
+	uint8_t msg = 0xAA;
 	// konfiguracja przerwan
 	EICRA |= (1<<ISC11)|(1<<ISC10); //rising edge
 	EIMSK|=(1<<INT1);
@@ -112,28 +126,33 @@ int main(void)
 		{
 			// todo
 			alarmFlag = 0;
+			while (1) // wy³aczenie alarmu przy resecie - ma nadawac do upadlego
+			{
+				nRF24_WriteTXPayload(&msg);
+				_delay_ms(1);
+				nRF24_WaitTX();
+				togglePin(led1);
+				_delay_ms(1000);
+			}
 		}
-		
-		for( uint8_t i=0; i<10; i++)
-		{
-			nRF24_WriteTXPayload(&i);
-			_delay_ms(1);
-			nRF24_WaitTX();
-			togglePin(led1);
-			_delay_ms(1000);
-		}
-		
     }
 #endif
 
 #ifdef NRF_RX
 	
-	uint8_t readData;
+	uint8_t msg;
 	
 	// konfiguracja przerwan
 	PCICR |= (1<<PCIE0);
 	PCMSK0 |= (1<<PCINT0);
-
+	// TIMER 0
+	// F_CPU = 1MHz, ustawiamy czestotliwosc zerowania sie timera bliska 10 Hz (dokladnie 9.76 Hz)
+	TCCR0A |= (1<<WGM01); // tryb CTC Timer 0
+	TCCR0B |=(1<<CS02)|(1<<CS00); //dzielnik 1024
+	OCR0A =99; // ustawienie rejestru porownania
+	
+	TIMSK0 |= (1<<OCIE0A);// wlaczenie obslugi przerwania
+	
 	sei();   // odblokowujemy przyjmowanie przerwañ
 
 	// konfiguracja nRF
@@ -148,17 +167,12 @@ int main(void)
 	/* Replace with your application code */
 	while (1)
 	{
-		if( 1 == nrfDataInt )
-		{
-			// todo
-			nrfDataInt = 0;
-			togglePin(led1);
-			buzzerPeak(buzzer);
-		}
 		if ( nRF24_RXAvailible() )
 		{
-			nRF24_ReadRXPaylaod(&readData);
+			nRF24_ReadRXPaylaod(&msg);
 			togglePin(led2);
+			alarmFlag = 1;
+			setPin(buzzer);
 		}
 	}
 #endif
